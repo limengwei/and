@@ -1,32 +1,75 @@
 <template>
   <div class="home">
-    <swipe :autoplay="3000" indicator-color="white">
-      <swipe-item></swipe-item>
-      <swipe-item></swipe-item>
-    </swipe>
+    <div>
+      <swipe
+        :autoplay="3000"
+        indicator-color="white"
+        :height="180"
+      >
+        <swipe-item @click="toAd">
+          <img src="https://cn.vuejs.org/images/logo.png">
+        </swipe-item>
+        <swipe-item @click="toAd">
+          <img src="https://img.yzcdn.cn/vant/logo.png">
+        </swipe-item>
+      </swipe>
+    </div>
     <div class="area-layout">
-      <div class="area-item" @click="showAreaPicker(0)">
-        <div class="area">{{area_s}}</div>
-        <div class="desc">选择出发地</div>
+      <div
+        class="area-item"
+        @click="showAreaPicker(0)"
+      >
+        <div class="area">
+          {{ area_s }}
+        </div>
+        <div class="desc">
+          选择出发地
+        </div>
       </div>
-      <icon name="exchange" @click="switchArea"/>
+      <icon
+        name="exchange"
+        @click="switchArea"
+      />
 
-      <div class="area-item" @click="showAreaPicker(1)">
-        <div class="area">{{area_e}}</div>
-        <div class="desc">选择目的地</div>
+      <div
+        class="area-item"
+        @click="showAreaPicker(1)"
+      >
+        <div class="area">
+          {{ area_e }}
+        </div>
+        <div class="desc">
+          选择目的地
+        </div>
       </div>
     </div>
 
-    <van-btn size="large" type="info" class="search">查找车主</van-btn>
+    <van-btn
+      size="large"
+      type="info"
+      class="search"
+      @click="toRouteList(-1)"
+    >
+      查找车主
+    </van-btn>
 
     <div class="lines-layout">
       <div class="title-wrap">
-        <icon name="fire" class="fire" size="25"/>
+        <icon
+          name="fire"
+          class="fire"
+          size="25"
+        />
         热门线路
       </div>
 
       <div class="lines-wrap">
-        <div class="line-item" v-for="(item,i) in lineList" :key="i" @click="toRouteList(i)">
+        <div
+          v-for="(item,i) in lineList"
+          :key="i"
+          class="line-item"
+          @click="toRouteList(i)"
+        >
           <div>
             <label>郑州</label>
             <icon name="weapp-nav"/>
@@ -34,13 +77,13 @@
           </div>
           <label class="tag">99辆</label>
         </div>
-
       </div>
-
     </div>
 
-
-    <popup v-model="areaPicker" position="bottom">
+    <popup
+      v-model="areaPicker"
+      position="bottom"
+    >
       <picker
         show-toolbar
         :columns="areaList"
@@ -49,57 +92,100 @@
       />
     </popup>
 
+
   </div>
 </template>
 
 <script>
-    // @ is an alias to /src
-    import {Swipe, SwipeItem, Button, Picker, Icon, Popup} from 'vant'
+  // @ is an alias to /src
+  import {
+    Swipe, SwipeItem, Button, Picker, Icon, Popup
+  } from 'vant';
 
-    export default {
-        name: 'home',
-        components: {
-            Swipe, SwipeItem, "van-btn": Button, Icon, Picker, Popup
-        },
-        data() {
-            return {
-                areaPickerType: 0,//0出发地，1目的地
-                areaPicker: false,
-                area_s: "郑州",
-                area_e: "西平",
-                areaList: ["郑州", "西平", "许昌", "漯河", "驻马店"],
-                lineList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},]
-            }
-        },
-        methods: {
-            showAreaPicker(type) {
-                this.areaPickerType = type;
-                this.areaPicker = true;
-            },
-            onAreaConfirm(value) {
-                if (this.areaPickerType === 0) {
-                    this.area_s = value;
-                } else if (this.areaPickerType === 1) {
-                    this.area_e = value;
-                }
-                this.areaPicker = false;
-            },
-            switchArea() {
-                let temp = this.area_s;
-                this.area_s = this.area_e;
-                this.area_e = temp;
-            },
-            toRouteList(pos){
-                this.$router.push({ path: '/routelist', params: { userId: '123' }})
-            }
+  export default {
+    name: 'Home',
+    components: {
+      Swipe,
+      SwipeItem,
+      'van-btn': Button,
+      Icon,
+      Picker,
+      Popup
+    },
+    data() {
+      return {
+        areaPickerType: 0, // 0出发地，1目的地
+        areaPicker: false,
+        area_s: '郑州',
+        area_e: '西平',
+        areaList: ['郑州', '西平', '许昌', '漯河', '驻马店'],
+        lineList: [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+        ],
+      };
+    },
+    methods: {
+      showAreaPicker(type) {
+        this.areaPickerType = type;
+        this.areaPicker = true;
+      },
+      onAreaConfirm(value) {
+        if (this.areaPickerType === 0) {
+          this.area_s = value;
+        } else if (this.areaPickerType === 1) {
+          this.area_e = value;
         }
-    };
+        this.areaPicker = false;
+      },
+      switchArea() {
+        const temp = this.area_s;
+        this.area_s = this.area_e;
+        this.area_e = temp;
+      },
+      toRouteList(pos) {
+        this.$router.push({
+          path: '/routelist',
+          params: { userId: '123' },
+        });
+      },
+      toAd() {
+        this.$router.push({
+          path: '/ad',
+          params: { userId: '123' },
+        });
+      },
+    },
+  };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .home {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
   }
 
   .van-swipe {
@@ -108,6 +194,10 @@
 
   .van-swipe-item {
     background-color: #42b983;
+
+    img {
+      width: 100%;
+    }
   }
 
   .area-layout {
@@ -201,13 +291,10 @@
           margin: 0 5px;
         }
 
-
         &:active {
           background-color: #eee;
         }
       }
     }
   }
-
-
 </style>

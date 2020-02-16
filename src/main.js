@@ -3,13 +3,16 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'vant/lib/index.css';
-import {Lazyload} from 'vant'
+import { Lazyload } from 'vant';
+
+import moment from 'moment'
+
+Vue.prototype.$moment = moment;
 
 Vue.config.productionTip = false;
-Vue.use(Lazyload)
+Vue.use(Lazyload);
 new Vue({
   router,
   store,
   render: h => h(App),
 }).$mount('#app');
-
